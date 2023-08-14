@@ -11,7 +11,8 @@ venv/
 !example/
 
 # Data files (if you don't want to track the MIDI files)
-*.mid
+# TODO: ugh
+./*.mid 
 *.mp4
 *.mov
 *.aif
