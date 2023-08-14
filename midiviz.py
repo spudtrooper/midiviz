@@ -7,12 +7,11 @@ import math
 pygame.init()
 
 # Constants
-SIDE_LENGTH = 800  # Square side length
-WIDTH, HEIGHT = SIDE_LENGTH, SIDE_LENGTH
+WIDTH, HEIGHT = 1280, 720 # youtube
 BACKGROUND_COLOR = (0, 0, 0)
 MIN_SQUARE_SIZE = 10
 SPACE_BETWEEN_DOTS = 35
-LIGHT_GRID_COLOR = (220, 220, 220)
+LIGHT_GRID_COLOR = (30, 30, 30)
 MIN_FADE_TIME = 0.5  # minimum fade time in seconds
 
 DRAW_TRACK_NUMBERS = False  # Use this boolean to turn on/off drawing track numbers
@@ -20,7 +19,7 @@ USE_COLOR = True  # Use this boolean to turn on/off color coding the squares
 DRAW_GRID = False
 
 # Load MIDI file into PrettyMIDI object
-midi_path = '20210906-BrunchFull.mid'
+midi_path = 'example/20210906-BrunchFull.mid'
 midi_data = pretty_midi.PrettyMIDI(midi_path)
 
 # Extract track-wise notes and their timings
@@ -39,12 +38,14 @@ for idx, instrument in enumerate(midi_data.instruments):
 # Sort events by time
 events.sort(key=lambda x: x[0])
 
-# Calculate grid layout for a square
-grid_size = math.ceil(math.sqrt(track_count))
-grid_width = grid_size * SPACE_BETWEEN_DOTS
-grid_height = grid_width  # Making it square
+# Calculate grid layout based on 16:9 aspect ratio
+grid_columns = int(math.sqrt(track_count * 16 / 9))
+grid_rows = math.ceil(track_count / grid_columns)
 
-# Adjusted starting positions to center the grid
+grid_width = grid_columns * SPACE_BETWEEN_DOTS
+grid_height = grid_rows * SPACE_BETWEEN_DOTS
+
+# Adjusted starting positions to include the padding
 start_x = (WIDTH - grid_width) // 2
 start_y = (HEIGHT - grid_height) // 2
 
@@ -68,10 +69,10 @@ while True:
 
     # Drawing a light-colored grid
     if DRAW_GRID:
-        for i in range(grid_size + 1):
+        for i in range(grid_rows + 1):
             pygame.draw.line(screen, LIGHT_GRID_COLOR, (start_x, start_y + i * SPACE_BETWEEN_DOTS), 
                             (start_x + grid_width, start_y + i * SPACE_BETWEEN_DOTS))
-        for j in range(grid_size + 1):
+        for j in range(grid_columns + 1):
             pygame.draw.line(screen, LIGHT_GRID_COLOR, (start_x + j * SPACE_BETWEEN_DOTS, start_y), 
                             (start_x + j * SPACE_BETWEEN_DOTS, start_y + grid_height))
 
@@ -92,8 +93,8 @@ while True:
             del active_tracks[idx]
             continue
 
-        col = idx % grid_size
-        row = idx // grid_size
+        col = idx % grid_columns
+        row = idx // grid_columns
         square_size = MIN_SQUARE_SIZE + velocity / 128 * 15
         color = get_color_for_track(idx) if USE_COLOR else (255, 255, 255)
         faded_color = tuple([int(c * (1 - fade_factor)) for c in color])
