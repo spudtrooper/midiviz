@@ -16,7 +16,7 @@ MIN_FADE_TIME = 0.5  # minimum fade time in seconds
 
 DRAW_TRACK_NUMBERS = False  # Use this boolean to turn on/off drawing track numbers
 USE_COLOR = True  # Use this boolean to turn on/off color coding the squares
-DRAW_GRID = True
+DRAW_GRID = False
 
 # Load MIDI file into PrettyMIDI object
 midi_path = 'example/20210906-BrunchFull.mid'
