@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+
+# Data files (if you don't want to track the MIDI files)
+*.mid
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# IDEs
+.vscode/
+.idea/
+*.swp  # for vim
+*.swo  # for vim
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Linux
+*.db
+*~
+
+# Not sure where this comes from?
+media/
