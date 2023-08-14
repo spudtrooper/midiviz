@@ -7,7 +7,7 @@ import math
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 450, 800
+VIEWPORT_WIDTH, VIEWPORT_HEIGHT = 1600, 900
 BACKGROUND_COLOR = (0, 0, 0)
 MIN_SQUARE_SIZE = 10
 SPACE_BETWEEN_DOTS = 35
@@ -42,19 +42,17 @@ events.sort(key=lambda x: x[0])
 grid_columns = int(math.sqrt(track_count * 9 / 16))
 grid_rows = math.ceil(track_count / grid_columns)
 
-grid_width = grid_columns * SPACE_BETWEEN_DOTS
-grid_height = grid_rows * SPACE_BETWEEN_DOTS
-
-# Adjusted starting positions to include the padding
-start_x = (WIDTH - grid_width) // 2
-start_y = (HEIGHT - grid_height) // 2 + MIN_SQUARE_SIZE
+GRID_HEIGHT = VIEWPORT_HEIGHT
+GRID_WIDTH = int(GRID_HEIGHT * 9 / 16)
+PADDING_X = (VIEWPORT_WIDTH - GRID_WIDTH) // 2
+PADDING_Y = (VIEWPORT_HEIGHT - GRID_HEIGHT) // 2
 
 # Function to get a color based on the track number
 def get_color_for_track(track_num):
     return (track_num * 50 % 255, track_num * 30 % 255, track_num * 70 % 255)
 
 # Pygame loop
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((VIEWPORT_WIDTH, VIEWPORT_HEIGHT))
 pygame.display.set_caption('MIDI Visualization')
 clock = pygame.time.Clock()
 pygame.mixer.music.load(midi_path)
@@ -70,11 +68,13 @@ while True:
     # Drawing a light-colored grid
     if DRAW_GRID:
         for i in range(grid_rows + 1):
-            pygame.draw.line(screen, LIGHT_GRID_COLOR, (start_x, start_y + i * SPACE_BETWEEN_DOTS), 
-                            (start_x + grid_width, start_y + i * SPACE_BETWEEN_DOTS))
+            pygame.draw.line(screen, LIGHT_GRID_COLOR, 
+                            (PADDING_X, PADDING_Y + i * SPACE_BETWEEN_DOTS), 
+                            (PADDING_X + GRID_WIDTH, PADDING_Y + i * SPACE_BETWEEN_DOTS))
         for j in range(grid_columns + 1):
-            pygame.draw.line(screen, LIGHT_GRID_COLOR, (start_x + j * SPACE_BETWEEN_DOTS, start_y), 
-                            (start_x + j * SPACE_BETWEEN_DOTS, start_y + grid_height))
+            pygame.draw.line(screen, LIGHT_GRID_COLOR, 
+                            (PADDING_X + j * SPACE_BETWEEN_DOTS, PADDING_Y), 
+                            (PADDING_X + j * SPACE_BETWEEN_DOTS, PADDING_Y + GRID_HEIGHT))
 
     while events and events[0][0] <= current_time:
         event_data = events.pop(0)
@@ -100,8 +100,8 @@ while True:
         faded_color = tuple([int(c * (1 - fade_factor)) for c in color])
 
         # Calculate centered positions for squares within the grid cell
-        x_pos = start_x + col * SPACE_BETWEEN_DOTS + (SPACE_BETWEEN_DOTS - square_size) / 2
-        y_pos = start_y + row * SPACE_BETWEEN_DOTS + (SPACE_BETWEEN_DOTS - square_size) / 2
+        x_pos = PADDING_X + col * SPACE_BETWEEN_DOTS + (SPACE_BETWEEN_DOTS - square_size) / 2
+        y_pos = PADDING_Y + row * SPACE_BETWEEN_DOTS + (SPACE_BETWEEN_DOTS - square_size) / 2
 
         pygame.draw.rect(screen, faded_color, (x_pos, y_pos, square_size, square_size))
 
@@ -119,3 +119,4 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
