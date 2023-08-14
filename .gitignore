@@ -7,8 +7,14 @@ __pycache__/
 venv/
 .venv/
 
+# Allow media in examples
+!example/
+
 # Data files (if you don't want to track the MIDI files)
 *.mid
+*.mp4
+*.mov
+*.aif
 
 # Logs and temporary files
 *.log
@@ -33,6 +39,3 @@ Desktop.ini
 
 # Not sure where this comes from?
 media/
-
-# Allow media in examples
-!example/
