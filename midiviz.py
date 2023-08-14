@@ -53,6 +53,20 @@ start_y = (HEIGHT - grid_height) // 2
 def get_color_for_track(track_num):
     return (track_num * 50 % 255, track_num * 30 % 255, track_num * 70 % 255)
 
+def draw_grid():
+    for i in range(grid_rows + 1):
+        pygame.draw.line(screen, LIGHT_GRID_COLOR, (start_x, start_y + i * SPACE_BETWEEN_DOTS), 
+                        (start_x + grid_width, start_y + i * SPACE_BETWEEN_DOTS))
+    for j in range(grid_columns + 1):
+        pygame.draw.line(screen, LIGHT_GRID_COLOR, (start_x + j * SPACE_BETWEEN_DOTS, start_y), 
+                        (start_x + j * SPACE_BETWEEN_DOTS, start_y + grid_height))
+
+def draw_track_numbers(x_pos, y_pos, square_size, idx):
+    font = pygame.font.SysFont(None, 25)
+    text_surface = font.render(str(idx), True, (0, 0, 0))
+    text_rect = text_surface.get_rect(center=(x_pos + square_size / 2, y_pos + square_size / 2))
+    screen.blit(text_surface, text_rect.topleft)
+
 # Pygame loop
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('MIDI Visualization')
@@ -69,12 +83,7 @@ while True:
 
     # Drawing a light-colored grid
     if DRAW_GRID:
-        for i in range(grid_rows + 1):
-            pygame.draw.line(screen, LIGHT_GRID_COLOR, (start_x, start_y + i * SPACE_BETWEEN_DOTS), 
-                            (start_x + grid_width, start_y + i * SPACE_BETWEEN_DOTS))
-        for j in range(grid_columns + 1):
-            pygame.draw.line(screen, LIGHT_GRID_COLOR, (start_x + j * SPACE_BETWEEN_DOTS, start_y), 
-                            (start_x + j * SPACE_BETWEEN_DOTS, start_y + grid_height))
+        draw_grid()
 
     while events and events[0][0] <= current_time:
         event_data = events.pop(0)
@@ -106,10 +115,7 @@ while True:
         pygame.draw.rect(screen, faded_color, (x_pos, y_pos, square_size, square_size))
 
         if DRAW_TRACK_NUMBERS:
-            font = pygame.font.SysFont(None, 25)
-            text_surface = font.render(str(idx), True, (0, 0, 0))
-            text_rect = text_surface.get_rect(center=(x_pos + square_size / 2, y_pos + square_size / 2))
-            screen.blit(text_surface, text_rect.topleft)
+            draw_track_numbers(x_pos, y_pos, square_size, idx)
 
         active_tracks[idx] = (velocity, fade_time + elapsed_time, duration)  # increment fade_time by elapsed_time
 
