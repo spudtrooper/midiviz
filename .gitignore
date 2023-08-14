@@ -33,3 +33,6 @@ Desktop.ini
 
 # Not sure where this comes from?
 media/
+
+# Allow media in examples
+!examples/
