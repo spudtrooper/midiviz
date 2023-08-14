@@ -6,7 +6,7 @@ This was created using ChatGPT with some iteration.
 
 ## Example
 
-See [YouTube video](https://youtu.be/7TJwmhFurUQ)
+[YouTube video](https://youtu.be/7TJwmhFurUQ) for [this song](https://open.spotify.com/track/1dxl8F294io0E6Sxrd6nQe?si=d73fe8e311cc4e78)
 
 Also see midi and audi source files in [example/](example/)
 
