@@ -1,7 +1,7 @@
 import pretty_midi
+import pygame
 
 MIN_FADE_TIME = 0.5  # minimum fade time in seconds
-
 
 def load_event_data(midi_path):
     midi_data = pretty_midi.PrettyMIDI(midi_path)
@@ -30,4 +30,12 @@ def load_event_data(midi_path):
     # Sort events by time
     events.sort(key=lambda x: x[0])
 
-    return (events, track_count)
+    return events, track_count
+
+def start_game(midi_path, width, height):
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption('MIDI Visualization')
+    clock = pygame.time.Clock()
+    pygame.mixer.music.load(midi_path)
+    pygame.mixer.music.play()    
+    return screen, clock
