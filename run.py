@@ -1,5 +1,4 @@
 import pygame
-import squares
 import sys
 import midiviz
 
@@ -26,9 +25,3 @@ def run(midi_path, o):
 
     pygame.quit()
     sys.exit()
-    
-pygame.init()
-# midi_path = 'example/20210906-BrunchFull.mid'
-midi_path = 'data/smoke2.mid'
-o = squares.Squares()
-run(midi_path, o)
